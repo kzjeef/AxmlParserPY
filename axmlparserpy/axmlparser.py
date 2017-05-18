@@ -55,7 +55,7 @@ class AXMLParser:
         self.m_classAttribute = -1
         self.m_styleAttribute = -1
 
-    def next(self):
+    def __next__(self):
         self.doNext()
         return self.m_event
 
