@@ -35,8 +35,19 @@ class AXMLParser:
 
         self.buff = axmlparserpy.bytecode.BuffHandle(raw_buff)
 
-        self.buff.read(4)
-        self.buff.read(4)
+        _type, _header_size, _size = unpack('<HHL', self.buff.read(8))
+        
+        if _header_size == 28024:
+            # Can be a common error: the file is not an AXML but a plain XML
+            # The file will then usually start with '<?xm' / '3C 3F 78 6D'
+            print("Header size is 28024! Are you trying to parse a plain XML file?")
+            exit(1)
+        if _type != 0x0003:
+            print("header-type error")
+            exit(1)
+
+        # self.buff.read(4)
+        # self.buff.read(4)
 
         self.sb = StringBlock(self.buff)
 
